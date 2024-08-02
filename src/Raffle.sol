@@ -63,6 +63,14 @@ contract Raffle is VRFConsumerBaseV2Plus {
         emit RaffleEntered(msg.sender);
     }
 
+    function checkUpKeep(bytes calldata /* checkData */) public view returns (bool upkeepNeeded, bytes memory /* performData */) {
+         bool timeHasPassed = ((block.timestamp - s_lastTimeStamp) >= i_interval);
+         bool isOpen = s_raffleState = RaffleState.OPEN;
+         bool hasBalance = address(this).balance > 0;
+         bool hasPlayers = s_players.length > 0;
+         upkeepNeeded = timeHasPassed && isOpen && hasBalance && hasPlayers; 
+    }
+
     function pickWinner() external {
         if ((block.timestamp - s_lastTimeStamp) < i_interval) {
             revert();
@@ -84,6 +92,8 @@ contract Raffle is VRFConsumerBaseV2Plus {
         uint256 requestId = s_vrfCoordinator.requestRandomWords(request);
     }
 
+    // CEI: Checks, Effects, Interactions pattern
+    // Checks = requires/ifs, effects = internal contract state, interactions = external contract interactions
     function fulfillRandomWords(uint256 requestId, uint256[] calldata randomWords) internal override {
         uint256 indexOfWinner = randomWords[0] % s_players.length;
         address payable recentWinner = s_players[indexOfWinner];
@@ -91,12 +101,12 @@ contract Raffle is VRFConsumerBaseV2Plus {
         s_raffleState = RaffleState.OPEN;
         s_players = new address payable[](0);
         s_lastTimeStamp = block.timestamp;
+        emit WinnerPicked(s_recentWinner);
 
         (bool success,) = recentWinner.call{value: address(this).balance}("");
         if (!success) {
             revert Raffle__TransferFailed();
         }
-        emit WinnerPicked(s_recentWinner);
     }
 
     // Getter functions
