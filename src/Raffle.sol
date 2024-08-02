@@ -4,7 +4,7 @@ pragma solidity 0.8.19;
 
 contract Raffle {
 
-    error SendMoreToEnterRaffle();
+    error Raffle__SendMoreToEnterRaffle();
 
     uint256 private immutable i_entranceFee;
 
@@ -13,9 +13,8 @@ contract Raffle {
     }
     
     function enterRaffle() public payable {
-
         if(msg.value < i_entranceFee) {
-            revert SendMoreToEnterRaffle();
+            revert Raffle__SendMoreToEnterRaffle();
         }
     }
 
