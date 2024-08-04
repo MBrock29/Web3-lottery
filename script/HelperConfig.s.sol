@@ -8,7 +8,7 @@ abstract contract CodeConstants {
     uint256 public constant ETH_SEPOLIA_CHAIN_ID = 1115511;
 }
 
-contract HelperConfig is Script {
+contract HelperConfig is CodeConstants, Script {
     struct NetworkConfig {
         uint256 entranceFee;
         uint256 interval;
