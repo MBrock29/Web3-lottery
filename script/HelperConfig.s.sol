@@ -52,10 +52,10 @@ contract HelperConfig is CodeConstants, Script {
     function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
         return
             NetworkConfig({
-                entranceFee: 0.02 ether,
+                entranceFee: 0.01 ether,
                 interval: 30,
-                vrfCoordinator: 0xD7f86b4b8Cae7D942340FF628F82735b7a20893a,
-                gasLane: 0x8077df514608a09f83e4e8d300645594e5d7234665448ba83f51a50f842bd3d9,
+                vrfCoordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
+                gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
                 callbackGasLimit: 500000,
                 subscriptionId: 0
             });
@@ -76,10 +76,10 @@ contract HelperConfig is CodeConstants, Script {
         vm.stopBroadcast();
 
         localNetworkConfig = NetworkConfig({
-            entranceFee: 0.02 ether,
+            entranceFee: 0.01 ether,
             interval: 30,
             vrfCoordinator: address(vrfCoorfinatorMock),
-            gasLane: 0x8077df514608a09f83e4e8d300645594e5d7234665448ba83f51a50f842bd3d9,
+            gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
             callbackGasLimit: 500000,
             subscriptionId: 0
         });
