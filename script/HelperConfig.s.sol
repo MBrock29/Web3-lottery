@@ -11,7 +11,7 @@ abstract contract CodeConstants {
 
 contract HelperConfig is CodeConstants, Script {
     error HelperConfig__InvalidChainId();
-    
+
     struct NetworkConfig {
         uint256 entranceFee;
         uint256 interval;
@@ -38,8 +38,6 @@ contract HelperConfig is CodeConstants, Script {
         } else {
             revert HelperConfig__InvalidChainId();
         }
-
-        }
     }
 
     function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
@@ -52,5 +50,12 @@ contract HelperConfig is CodeConstants, Script {
                 callbackGasLimit: 500000,
                 subscriptionId: 0
             });
+    }
+
+    function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
+        // Check to see if we set active network config
+        if (localNetworkConfig.vrfCoordinator != address(0)) {
+            return localNetworkConfig;
+        }
     }
 }
